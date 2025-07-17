@@ -1,0 +1,6 @@
+@Infonetica.WorkflowEngine_HostAddress = http://localhost:5020
+
+GET {{Infonetica.WorkflowEngine_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
