@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Infonetica.WorkflowEngine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07d561b75973ac666be5118c3d8e9b40594b0d5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26eb387c65d57c15638a167dbd5894b6058be2a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Infonetica.WorkflowEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Infonetica.WorkflowEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
