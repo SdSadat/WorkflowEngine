@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using Infonetica.WorkflowEngine.Models;
+using Infonetica.WorkflowEngine.Validators;
 
 namespace Infonetica.WorkflowEngine.Services;
 
@@ -7,87 +9,28 @@ public class WorkflowService
 {
     // initialize readonly field for datastore
     private readonly InMemoryDataStore _dataStore;
-
-    public WorkflowService(InMemoryDataStore dataStore)
+    private readonly WorkflowDefinitionValidator _validator;
+    public WorkflowService(InMemoryDataStore dataStore, WorkflowDefinitionValidator validator)
     {
-        // contruct the value of datastore
+        // contruct the value of datastore and validator
         _dataStore = dataStore;
+        _validator = validator;
     }
 
     // utility function to create a workflow definition
     public (WorkflowDefinition? definition, string? error) CreateDefinition(WorkflowDefinition definition)
     {
-        // null check
 
-        if(definition.States == null || definition.Actions == null)
+        // validate the definition using the validator
+        var validationError = _validator.Validate(definition);
+        if (!string.IsNullOrWhiteSpace(validationError))
         {
-            return (null, "Workflow definition must have states and actions defined.");
-        }
-
-        if (string.IsNullOrWhiteSpace(definition.Id))
-        {
-            return (null, "Workflow definition ID cannot be null or empty.");
+            return (null, validationError);
         }
        // check if definition id already exists in the in-memory data store
         if (_dataStore.WorkflowDefinitions.ContainsKey(definition.Id))
         {
             return (null, $"Workflow definition with ID '{definition.Id}' already exists.");
-        }
-
-
-        // check if only one initial state
-        if (definition.States.Count(s => s.IsInitial) != 1)
-        {
-            return (null, "A workflow definition must have exactly one initial state.");
-        }
-
-        // check for uniqueness of each state id :)
-        bool ContainsDuplicateStateIds = false;
-        var StateIdsMap = new Dictionary<string, int>();
-        var DuplicateStateIds = new List<string>();
-        foreach (var state in definition.States)
-        {
-            if (StateIdsMap.ContainsKey(state.Id))
-            {
-                StateIdsMap[state.Id]++;
-                ContainsDuplicateStateIds = true;
-                if (!DuplicateStateIds.Contains(state.Id))
-                {
-                    DuplicateStateIds.Add(state.Id);
-                }
-            }
-            else
-            {
-                StateIdsMap[state.Id] = 1;
-            }
-        }
-        if (ContainsDuplicateStateIds)
-        {
-            return (null, "State IDs within a definition must be unique. Duplicate IDs: " + "[" + string.Join(", ", DuplicateStateIds) + "]");
-        }
-
-        bool ContainsDuplicateActionIds = false;
-        var ActionIdsMap = new Dictionary<string, int>();
-        var DuplicateActionIds = new List<string>();
-        foreach (var Action in definition.Actions)
-        {
-            if (ActionIdsMap.ContainsKey(Action.Id))
-            {
-                ActionIdsMap[Action.Id]++;
-                ContainsDuplicateActionIds = true;
-                if (!DuplicateActionIds.Contains(Action.Id))
-                {
-                    DuplicateActionIds.Add(Action.Id);
-                }
-            }
-            else
-            {
-                ActionIdsMap[Action.Id] = 1;
-            }
-        }
-        if (ContainsDuplicateActionIds)
-        {
-            return (null, "Action IDs within a definition must be unique. Duplicate IDs: " + "[" +string.Join(", ", DuplicateActionIds) + "]");
         }
 
         // validation of definition done, now add to db

@@ -1,5 +1,6 @@
 using Infonetica.WorkflowEngine.Models;
 using Infonetica.WorkflowEngine.Services;
+using Infonetica.WorkflowEngine.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -17,8 +18,8 @@ public static class WorkflowEndpoints
         // accepts and validates a WorkflowDefinition object, returns created definition if valid
         group.MapPost("/definitions", ([FromBody] WorkflowDefinition definition, WorkflowService service) =>
         {
-            var (newDefinition, error) = service.CreateDefinition(definition);
-            return error != null ? Results.BadRequest(new { message = error }) : Results.Created($"/api/definitions/{newDefinition!.Id}", newDefinition);
+            var (newDefinition, err) = service.CreateDefinition(definition);
+            return err != null ? Results.BadRequest(new { message = err, error = true  }) : Results.Created($"/api/definitions/{newDefinition!.Id}", newDefinition);
         }).WithTags("Workflow Configuration");
 
 
@@ -40,6 +41,10 @@ public static class WorkflowEndpoints
         // Endpoint to start an instance from a workflow definition Id
         group.MapPost("/instances", ([FromBody] StartInstanceRequest request, WorkflowService service) =>
         {
+            if (string.IsNullOrWhiteSpace(request.DefinitionId))
+            {
+                return Results.BadRequest(new { message = "Definition ID cannot be empty, Please refer schema requirements", error = true });
+            }
             var (newInstance, err) = service.StartInstance(request.DefinitionId);
             return err != null ? Results.NotFound(new { message = err, error = true }) : Results.Ok(newInstance);
         }).WithTags("Runtime");
@@ -49,21 +54,31 @@ public static class WorkflowEndpoints
         {
             return store.WorkflowInstances.TryGetValue(id, out var instance)
                 ? Results.Ok(new { instance.Id, instance.CurrentState, instance.History })
-                : Results.NotFound(new { message = "Workflow Instance with given ID not found.", error = true});
+                : Results.NotFound(new { message = "Workflow Instance with given ID not found.", error = true });
         }).WithTags("Runtime");
 
         group.MapGet("/instances", (InMemoryDataStore store) =>
         {
-            return Results.Ok(store.WorkflowInstances.Values.Select(i => new { i.Id, i.DefinitionId, i.CurrentState }));
+            return Results.Ok(store.WorkflowInstances.Values.Select(i => new { i.Id, i.DefinitionId, i.CurrentState, i.History }));
         }).WithTags("Runtime");
 
         group.MapPost("/instances/{id}/execute", (Guid id, [FromBody] ExecuteActionRequest request, WorkflowService service) =>
         {
-            var (updatedInstance, error) = service.ExecuteAction(id, request.ActionId);
-            return error != null ? Results.BadRequest(new { message = error }) : Results.Ok(updatedInstance);
+            if(string.IsNullOrWhiteSpace(request.ActionId))
+            {
+                return Results.BadRequest(new { message = "Action ID cannot be empty, Please refer schema requirements", error = true });
+            }
+            var (updatedInstance, err) = service.ExecuteAction(id, request.ActionId);
+            return err != null ? Results.BadRequest(new { message = err, error = true }) : Results.Ok(updatedInstance);
         }).WithTags("Runtime");
     }
 
-    public record StartInstanceRequest(string DefinitionId);
-    public record ExecuteActionRequest(string ActionId);
+    public record StartInstanceRequest
+    {
+        public string DefinitionId { get; set; } = string.Empty;
+    };
+    public record ExecuteActionRequest
+    {
+        public string ActionId { get; set; } = string.Empty;
+    };
 }

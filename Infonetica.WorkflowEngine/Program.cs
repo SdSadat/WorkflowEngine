@@ -1,9 +1,11 @@
 using Infonetica.WorkflowEngine.Endpoints;
 using Infonetica.WorkflowEngine.Services;
+using Infonetica.WorkflowEngine.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<InMemoryDataStore>();
 builder.Services.AddScoped<WorkflowService>();
+builder.Services.AddScoped<WorkflowDefinitionValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
