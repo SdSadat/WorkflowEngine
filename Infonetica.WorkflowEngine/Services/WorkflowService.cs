@@ -18,6 +18,12 @@ public class WorkflowService
     public (WorkflowDefinition? definition, string? error) CreateDefinition(WorkflowDefinition definition)
     {
         // null check
+
+        if(definition.States == null || definition.Actions == null)
+        {
+            return (null, "Workflow definition must have states and actions defined.");
+        }
+
         if (string.IsNullOrWhiteSpace(definition.Id))
         {
             return (null, "Workflow definition ID cannot be null or empty.");
@@ -27,6 +33,7 @@ public class WorkflowService
         {
             return (null, $"Workflow definition with ID '{definition.Id}' already exists.");
         }
+
 
         // check if only one initial state
         if (definition.States.Count(s => s.IsInitial) != 1)
