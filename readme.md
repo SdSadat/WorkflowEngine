@@ -7,3 +7,4 @@
     ```
 5.  The service will start and listen on the HTTPS port (e.g `https://localhost:5020`).
 6.  A Swagger UI will be available at `/swagger` (`https://localhost:5020/swagger`)
+7.  The Default Environment is setup to `Development` This can be changed in `launchSettings.json`
