@@ -20,7 +20,7 @@ public static class WorkflowEndpoints
         {
             return store.WorkflowDefinitions.TryGetValue(id, out var definition)
                 ? Results.Ok(definition)
-                : Results.NotFound();
+                : Results.NotFound("Workflow Definition with given ID not found.");
         }).WithTags("Workflow Configuration");
         
         group.MapGet("/definitions", (InMemoryDataStore store) =>
@@ -39,7 +39,7 @@ public static class WorkflowEndpoints
         {
             return store.WorkflowInstances.TryGetValue(id, out var instance)
                 ? Results.Ok(new { instance.Id, instance.CurrentState, instance.History })
-                : Results.NotFound();
+                : Results.NotFound("Workflow Instance with given ID not found.");
         }).WithTags("Runtime");
         
         group.MapGet("/instances", (InMemoryDataStore store) =>

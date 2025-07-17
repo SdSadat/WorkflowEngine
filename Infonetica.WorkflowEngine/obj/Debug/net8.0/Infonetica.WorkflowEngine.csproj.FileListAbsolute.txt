@@ -32,3 +32,4 @@ S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\refint\Infonetica.
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.WorkflowEngine.pdb
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.WorkflowEngine.genruntimeconfig.cache
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\ref\Infonetica.WorkflowEngine.dll
+S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.WorkflowEngine.sourcelink.json
