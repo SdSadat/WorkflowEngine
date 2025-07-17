@@ -8,6 +8,8 @@ namespace Infonetica.WorkflowEngine.Models;
 /// <param name="Actions">The collection of actions (transitions) in the workflow.</param>
 public record WorkflowDefinition(
     string Id,
+    string Name,
+    string Description,
     List<State> States,
     List<Action> Actions
 );

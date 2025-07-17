@@ -94,9 +94,14 @@ public class WorkflowService
         {
             return (null, $"Action '{actionId}' transitions to an unknown state '{action.ToState}'.");
         }
-        
+        instance.History.Add(new Change(
+            Timestamp: DateTime.UtcNow,
+            Action: actionId ,
+            FromState: instance.CurrentState,
+            ToState: action.ToState
+        ));
         instance.CurrentState = action.ToState;
-        instance.History.Add((actionId, DateTime.UtcNow));
+ 
 
         return (instance, null);
     }
