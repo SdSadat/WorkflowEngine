@@ -1,11 +1,10 @@
 namespace Infonetica.WorkflowEngine.Models;
 
-/// <summary>
-/// Defines the structure of a workflow, including its states and actions.
-/// </summary>
-/// <param name="Id">The unique identifier for the workflow definition.</param>
-/// <param name="States">The collection of states in the workflow.</param>
-/// <param name="Actions">The collection of actions (transitions) in the workflow.</param>
+// Id: Unique identifier for the workflow definition
+// Name: Name of the workflow definition
+// Description: Description of the workflow definition
+// States: List of states that the workflow can be in
+// Actions: List of actions that can be performed in the workflow
 public record WorkflowDefinition(
     string Id,
     string Name,

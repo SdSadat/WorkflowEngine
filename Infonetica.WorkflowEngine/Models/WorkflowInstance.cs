@@ -1,8 +1,9 @@
 namespace Infonetica.WorkflowEngine.Models;
 
-/// <summary>
-/// Represents a running instance of a workflow definition.
-/// </summary>
+// Id: unique guid for the workflow instance
+// DefinitionId: identifier for the workflow definition this instance belongs to
+// CurrentState: current state of the workflow instance
+// History: list of changes made to the workflow instance
 public class WorkflowInstance
 {
     public Guid Id { get; }
