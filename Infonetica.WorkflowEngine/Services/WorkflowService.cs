@@ -35,10 +35,52 @@ public class WorkflowService
         }
 
         // check for uniqueness of each state id :)
-        var stateIds = new HashSet<string>(definition.States.Select(s => s.Id));
-        if (stateIds.Count != definition.States.Count)
+        bool ContainsDuplicateStateIds = false;
+        var StateIdsMap = new Dictionary<string, int>();
+        var DuplicateStateIds = new List<string>();
+        foreach (var state in definition.States)
         {
-            return (null, "State IDs within a definition must be unique.");
+            if (StateIdsMap.ContainsKey(state.Id))
+            {
+                StateIdsMap[state.Id]++;
+                ContainsDuplicateStateIds = true;
+                if (!DuplicateStateIds.Contains(state.Id))
+                {
+                    DuplicateStateIds.Add(state.Id);
+                }
+            }
+            else
+            {
+                StateIdsMap[state.Id] = 1;
+            }
+        }
+        if (ContainsDuplicateStateIds)
+        {
+            return (null, "State IDs within a definition must be unique. Duplicate IDs: " + "[" + string.Join(", ", DuplicateStateIds) + "]");
+        }
+
+        bool ContainsDuplicateActionIds = false;
+        var ActionIdsMap = new Dictionary<string, int>();
+        var DuplicateActionIds = new List<string>();
+        foreach (var Action in definition.Actions)
+        {
+            if (ActionIdsMap.ContainsKey(Action.Id))
+            {
+                ActionIdsMap[Action.Id]++;
+                ContainsDuplicateActionIds = true;
+                if (!DuplicateActionIds.Contains(Action.Id))
+                {
+                    DuplicateActionIds.Add(Action.Id);
+                }
+            }
+            else
+            {
+                ActionIdsMap[Action.Id] = 1;
+            }
+        }
+        if (ContainsDuplicateActionIds)
+        {
+            return (null, "Action IDs within a definition must be unique. Duplicate IDs: " + "[" +string.Join(", ", DuplicateActionIds) + "]");
         }
 
         // validation of definition done, now add to db
@@ -107,7 +149,7 @@ public class WorkflowService
         var action = definition.Actions.FirstOrDefault(a => a.Id == actionId);
 
 
-        // validating action
+        // validating action-------------
 
         // check if action id exists in the workflow definition
         if (action == null)

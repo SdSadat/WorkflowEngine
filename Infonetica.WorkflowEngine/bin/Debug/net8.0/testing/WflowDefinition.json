@@ -1,0 +1,71 @@
+{
+  "id": "def1",
+  "states": [
+    {
+      "id": "s1",
+      "name": "state1",
+      "description": "string",
+      "isInitial": true,
+      "isFinal": false,
+      "enabled": true
+    },
+    {
+      "id": "s2",
+      "name": "state2",
+      "description": "string",
+      "isInitial": false,
+      "isFinal": false,
+      "enabled": true
+    },
+    {
+      "id": "s3",
+      "name": "state3",
+      "description": "string",
+      "isInitial": false,
+      "isFinal": false,
+      "enabled": true
+    },
+    {
+      "id": "s4",
+      "name": "state4",
+      "description": "string",
+      "isInitial": false,
+      "isFinal": true,
+      "enabled": true
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "enabled": true,
+      "fromStates": [
+        "s1"
+      ],
+      "toState": "s2"
+    },
+    {
+      "id": "a2",
+      "enabled": true,
+      "fromStates": [
+        "s2"
+      ],
+      "toState": "s3"
+    },
+    {
+      "id": "a3",
+      "enabled": true,
+      "fromStates": [
+        "s3"
+      ],
+      "toState": "s4"
+    },
+    {
+      "id": "a4",
+      "enabled": true,
+      "fromStates": [
+        "s2"
+      ],
+      "toState": "s5"
+    }
+  ]
+}

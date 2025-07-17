@@ -33,3 +33,4 @@ S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.Workflo
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.WorkflowEngine.genruntimeconfig.cache
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\ref\Infonetica.WorkflowEngine.dll
 S:\Assignemnt\Info\Infonetica.WorkflowEngine\obj\Debug\net8.0\Infonetica.WorkflowEngine.sourcelink.json
+S:\Assignemnt\Info\Infonetica.WorkflowEngine\bin\Debug\net8.0\testing\WflowDefinition.json
